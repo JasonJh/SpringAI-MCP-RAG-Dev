@@ -4,12 +4,28 @@ spring:
   profiles:
     active: test
   ai:
+    vectorstore:
+      redis:
+        initialize-schema: true #是否初始化所需的模式
+        index-name: wjh-vectorstore # 用于存储向量的索引名称
+        prefix: 'embedding:'   # Redis的前缀
     openai:
       api-key: ${OPENAI_API_KEY}
       base-url: ${OPENAI_BASE_URL}
       chat:
         options:
           model: ${OPENAI_MODEL}
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 9379
+      password: 123456
 logging:
   level:
     root: info
+
+internet:
+  webSearch:
+    searxng:
+      url: http://localhost:6080/search
+      counts: 5
