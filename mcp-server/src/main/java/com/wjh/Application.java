@@ -1,6 +1,7 @@
 package com.wjh;
 
 import com.wjh.mcp.tool.DateTool;
+import com.wjh.mcp.tool.EmailTool;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.tool.method.MethodToolCallbackProvider;
 import org.springframework.boot.SpringApplication;
@@ -20,7 +21,7 @@ public class Application {
      * @return
      */
     @Bean
-    public ToolCallbackProvider registerMcpTools(DateTool dateTool){
-        return MethodToolCallbackProvider.builder().toolObjects(dateTool).build();
+    public ToolCallbackProvider registerMcpTools(DateTool dateTool, EmailTool emailTool) {
+        return MethodToolCallbackProvider.builder().toolObjects(dateTool,emailTool).build();
     }
 }

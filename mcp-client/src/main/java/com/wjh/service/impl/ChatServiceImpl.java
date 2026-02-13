@@ -11,6 +11,8 @@ import com.wjh.utils.SSEServer;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.document.Document;
@@ -30,14 +32,17 @@ public class ChatServiceImpl implements ChatService {
     @Resource
     private SearXngService searXngService;
 
+    private ChatMemory chatMemory;
+
     private String systemPrompt = """
             你是非常聪明的助手，我为你取名叫’LaGoGo‘。
             """;
 
     //构造器注入
-    public ChatServiceImpl(ChatClient.Builder chatClientBuilder, ToolCallbackProvider tools) {
+    public ChatServiceImpl(ChatClient.Builder chatClientBuilder, ToolCallbackProvider tools ,ChatMemory chatMemory) {
         this.chatClient = chatClientBuilder
                 .defaultToolCallbacks(tools)
+                .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
 //                .defaultSystem(systemPrompt)
                 .build();
     }
