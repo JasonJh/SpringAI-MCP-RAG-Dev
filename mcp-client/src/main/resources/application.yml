@@ -4,6 +4,21 @@ spring:
   profiles:
     active: test
   ai:
+    mcp:
+      client:
+        enabled: true
+        name: spring-ai-mcp-client
+        type: ASYNC
+        sse:
+          connections:
+            server1:
+              url: https://mcp.amap.com
+              sse-endpoint: /sse?key=e7d1387f68227d3d03cbb94621ce1c4f
+            server2:
+              url: http://localhost:9060
+              sse-endpoint: /sse
+        stdio:
+          servers-configuration: classpath:mcp-server.json
     vectorstore:
       redis:
         initialize-schema: true #是否初始化所需的模式

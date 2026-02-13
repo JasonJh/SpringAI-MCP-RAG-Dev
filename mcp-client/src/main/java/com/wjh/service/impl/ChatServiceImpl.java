@@ -14,6 +14,7 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.document.Document;
+import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -34,8 +35,9 @@ public class ChatServiceImpl implements ChatService {
             """;
 
     //构造器注入
-    public ChatServiceImpl(ChatClient.Builder chatClientBuilder) {
+    public ChatServiceImpl(ChatClient.Builder chatClientBuilder, ToolCallbackProvider tools) {
         this.chatClient = chatClientBuilder
+                .defaultToolCallbacks(tools)
 //                .defaultSystem(systemPrompt)
                 .build();
     }
