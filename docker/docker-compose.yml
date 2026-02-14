@@ -7,7 +7,31 @@ services:
     environment:
       - REDIS_ARGS=--requirepass 123456
     volumes:
-      - F:\docker\redis-stack\data:/data
+      - E:/docker/redis-stack/data:/data
     restart: unless-stopped
+
+  mysql-ai:
+    image: mysql:9.3.0
+    container_name: mysql9-ai  # 容器名称，需确保全局唯一
+    restart: always
+    ports:
+      - "5506:3306"            # 宿主机端口:容器端口
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      # 使用 Docker 命名的卷，不再直接指向 E 盘路径
+      - mysql_data:/var/lib/mysql
+      - mysql_log:/var/log/mysql
+      - mysql_conf:/etc/mysql/conf.d
+      - mysql_files:/var/lib/mysql-files
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+# 在文件最底部定义这些卷
+volumes:
+  mysql_data:
+  mysql_log:
+  mysql_conf:
+  mysql_files:
 
     # docker-componse up -d 在当前目录执行

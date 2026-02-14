@@ -5,25 +5,14 @@ import com.vladsch.flexmark.parser.Parser;
 import com.vladsch.flexmark.util.data.MutableDataSet;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.tool.annotation.Tool;
-import org.springframework.ai.tool.annotation.ToolParam;
-import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-
+import com.wjh.mcp.entity.EmailRequest;
 @Component
 @Slf4j
 public class EmailTool {
@@ -31,21 +20,21 @@ public class EmailTool {
     private final JavaMailSender mailSender;
     private final String from;
 
-    @Data
-    @ToString
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class EmailRequest {
-        @ToolParam(description = "收件人的邮箱")
-        private String email;
-        @ToolParam(description = "发送邮件的标题/主题")
-        private String subject;
-        @ToolParam(description = "发送邮件的消息/正文内容")
-        private String message;
-
-        @ToolParam(description = "邮件的内容是否为html还是markdown格式如果是markdown格式，则为1；如果是html格式则为2")
-        private Integer contentType;
-    }
+//    @Data
+//    @ToString
+//    @AllArgsConstructor
+//    @NoArgsConstructor
+//    public static class EmailRequest {
+//        @ToolParam(description = "收件人的邮箱")
+//        private String email;
+//        @ToolParam(description = "发送邮件的标题/主题")
+//        private String subject;
+//        @ToolParam(description = "发送邮件的消息/正文内容")
+//        private String message;
+//
+//        @ToolParam(description = "邮件的内容是否为html还是markdown格式如果是markdown格式，则为1；如果是html格式则为2")
+//        private Integer contentType;
+//    }
 
     @Autowired
     public EmailTool(JavaMailSender mailSender, @Value("${spring.mail.username}") String from) {
@@ -65,7 +54,7 @@ public class EmailTool {
 
         log.info("======== 调用mcp工具：sendMailMessage() ========");
         log.info("======== 参数：emailRequest: {} ========",emailRequest.toString());
-        Integer contentType = emailRequest.contentType;
+        Integer contentType = emailRequest.getContentType();
 
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
